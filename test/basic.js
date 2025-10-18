@@ -3,7 +3,8 @@ import common from './common.js'
 import Peer from '../src/index.js'
 import test from 'tape'
 
-process.on('uncaughtException', console.error) // User-Initiated Abort, reason=Close called
+// User-Initiated Abort, reason=Close called
+process.on('uncaughtException', console.error) 
 
 test('detect WebRTC support', function (t) {
   t.equal(Peer.WEBRTC_SUPPORT, true, 'builtin webrtc support')
@@ -125,6 +126,7 @@ test('sdpTransform function is called', function (t) {
       peer2.on('close', function () { t.pass('peer2 destroyed') })
       peer2.destroy()
     }, 0)
+
     return sdp
   }
 

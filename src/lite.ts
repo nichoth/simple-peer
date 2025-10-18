@@ -157,8 +157,8 @@ class Peer extends Duplex {
                 throw errCode(
                     new Error('No WebRTC support: Specify `opts.wrtc` option' +
                         ' in this environment'),
-                        'ERR_WEBRTC_SUPPORT'
-                    )
+                    'ERR_WEBRTC_SUPPORT'
+                )
             } else {
                 throw errCode(
                     new Error('No WebRTC support: Not a supported browser'),
