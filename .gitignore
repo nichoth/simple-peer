@@ -1,4 +1,7 @@
-.nyc_output
+dist
 node_modules
-package-lock.json
-pnpm-lock.yaml
+bundle.js
+.DS_Store
+.env
+
+.claude
