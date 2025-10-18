@@ -1,15 +1,39 @@
 {
-  "name": "@thaunknown/simple-peer",
+  "name": "@nichoth/simple-peer",
   "description": "Simple one-to-one WebRTC video/voice and data channels",
   "version": "10.0.12",
   "type": "module",
-  "author": {
-    "name": "ThaUnknown",
-    "email": "casistaken@gmail.com",
-    "url": "http://github.com/ThaUnknown"
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "require": "./dist/*.cjs"
+    },
+    "./min/*": {
+      "import": "./dist/*.min.js",
+      "require": "./dist/*.min.cjs"
+    }
   },
-  "bugs": {
-    "url": "https://github.com/thaunknown/simple-websocket/issues"
+  "files": [
+    "./dist/*"
+  ],
+  "scripts": {
+    "lint": "eslint \"./**/*.{ts,js}\"",
+    "build-cjs": "esbuild src/*.ts --format=cjs --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.cjs --sourcemap",
+    "build-cjs:min": "esbuild src/*.ts --format=cjs --minify --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.min.cjs --sourcemap",
+    "build-esm": "esbuild src/*.ts --format=esm --metafile=dist/meta.json --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --sourcemap && tsc --emitDeclarationOnly --project tsconfig.build.json --outDir dist",
+    "build-esm:min": "esbuild ./src/*.ts --format=esm --keep-names --bundle --tsconfig=tsconfig.build.json --minify --out-extension:.js=.min.js --outdir=./dist --sourcemap",
+    "build-example": "mkdir -p ./public && rm -rf ./public/* && VITE_DEBUG_MODE=staging vite --mode staging --base=\"/repo-name\" build",
+    "build-docs": "typedoc ./src/index.ts",
+    "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
+    "test": "npm run test-node && npm run test-browser",
+    "test-browser": "airtap --concurrency 1 --all -- test/*.js test/browser/*.js | tap-spec",
+    "test-browser-local": "airtap --preset local -- test/*.js | tap-spec",
+    "test-node": "tape test/*.js",
+    "test-node-debug": "cross-env DEBUG=* tape test/negotiation.js"
   },
   "dependencies": {
     "debug": "^4.3.7",
@@ -21,18 +45,25 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
     "airtap": "^4.0.4",
     "airtap-manual": "^1.0.0",
     "airtap-system": "^0.1.0",
     "babelify": "^10.0.0",
     "bowser": "^2.11.0",
     "cross-env": "^7.0.3",
+    "esbuild": "^0.25.11",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
     "prettier-bytes": "^1.0.4",
     "speedometer": "^1.1.0",
     "string-to-stream": "^3.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^5.9.0",
     "thunky": "^1.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.10",
     "ws": "^8.18.0"
   },
   "keywords": [
@@ -54,16 +85,22 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/thaunknown/simple-peer.git"
+    "url": "git://github.com/nichoth/simple-peer.git"
   },
-  "scripts": {
-    "test": "npm run test-node && npm run test-browser",
-    "test-browser": "airtap --concurrency 1 --all -- test/*.js test/browser/*.js | tap-spec",
-    "test-browser-local": "airtap --preset local -- test/*.js | tap-spec",
-    "test-node": "tape test/*.js",
-    "test-node-debug": "cross-env DEBUG=* tape test/negotiation.js"
+  "bugs": {
+    "url": "https://github.com/nichoth/simple-websocket/issues"
+  },
+  "author": {
+    "name": "ThaUnknown",
+    "email": "casistaken@gmail.com",
+    "url": "http://github.com/ThaUnknown"
   },
   "contributors": [
+    {
+      "name": "nichoth",
+      "email": "nichoth@nichoth.com",
+      "url": "https://nichoth.com"
+    },
     {
       "name": "Feross Aboukhadijeh",
       "email": "feross@feross.org",
