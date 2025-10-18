@@ -1,5 +1,6 @@
+// @ts-check
 import common from './common.js'
-import Peer from '../index.js'
+import Peer from '../src/index.js'
 import test from 'tape'
 
 process.on('uncaughtException', console.error) // User-Initiated Abort, reason=Close called
