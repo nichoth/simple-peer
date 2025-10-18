@@ -31,65 +31,65 @@ function warn (message) {
  * @param {Object} opts
  */
 class Peer extends Duplex {
-    _pc!: RTCPeerConnection
+    _pc!:RTCPeerConnection
 
     // Instance properties
-    __objectMode: boolean
-    _id: string
-    channelName: string | null
-    initiator: boolean
-    channelConfig: RTCDataChannelInit
-    channelNegotiated: boolean
-    config: RTCConfiguration
-    offerOptions: RTCOfferOptions
-    answerOptions: RTCAnswerOptions
-    sdpTransform: (sdp: string) => string
-    streams: MediaStream[]
-    trickle: boolean
-    allowHalfTrickle: boolean
-    iceCompleteTimeout: number
+    __objectMode:boolean
+    _id:string
+    channelName:string | null
+    initiator:boolean
+    channelConfig:RTCDataChannelInit
+    channelNegotiated:boolean
+    config:RTCConfiguration
+    offerOptions:RTCOfferOptions
+    answerOptions:RTCAnswerOptions
+    sdpTransform:(sdp:string) => string
+    streams:MediaStream[]
+    trickle:boolean
+    allowHalfTrickle:boolean
+    iceCompleteTimeout:number
 
-    _destroying: boolean
-    _connected: boolean
+    _destroying:boolean
+    _connected:boolean
 
-    remoteAddress: string | undefined
-    remoteFamily: string | undefined
-    remotePort: number | undefined
-    localAddress: string | undefined
-    localFamily: string | undefined
-    localPort: number | undefined
+    remoteAddress:string | undefined
+    remoteFamily:string | undefined
+    remotePort:number | undefined
+    localAddress:string | undefined
+    localFamily:string | undefined
+    localPort:number | undefined
 
-    _pcReady: boolean
-    _channelReady: boolean
-    _iceComplete: boolean
-    _iceCompleteTimer: NodeJS.Timeout | null
-    _channel: RTCDataChannel | null
-    _pendingCandidates: any[]
+    _pcReady:boolean
+    _channelReady:boolean
+    _iceComplete:boolean
+    _iceCompleteTimer:NodeJS.Timeout | null
+    _channel:RTCDataChannel | null
+    _pendingCandidates:any[]
 
-    _isNegotiating: boolean
-    _firstNegotiation: boolean
-    _batchedNegotiation: boolean
-    _queuedNegotiation: boolean
-    _sendersAwaitingStable: any[]
-    _senderMap: Map<MediaStreamTrack, Map<MediaStream, RTCRtpSender>>
-    _closingInterval: NodeJS.Timeout | null
+    _isNegotiating:boolean
+    _firstNegotiation:boolean
+    _batchedNegotiation:boolean
+    _queuedNegotiation:boolean
+    _sendersAwaitingStable:any[]
+    _senderMap:Map<MediaStreamTrack, Map<MediaStream, RTCRtpSender>>
+    _closingInterval:NodeJS.Timeout | null
 
-    _remoteTracks: Array<{ track: MediaStreamTrack, stream: MediaStream }>
-    _remoteStreams: MediaStream[]
+    _remoteTracks:Array<{ track:MediaStreamTrack, stream:MediaStream }>
+    _remoteStreams:MediaStream[]
 
-    _chunk: any
-    _cb: ((error?: Error | null) => void) | null
-    _interval: NodeJS.Timeout | null
+    _chunk:any
+    _cb:((error?:Error | null) => void) | null
+    _interval:NodeJS.Timeout | null
 
-    _isReactNativeWebrtc!: boolean
-    _onFinishBound!: (() => void) | null
-    _connecting!: boolean
+    _isReactNativeWebrtc!:boolean
+    _onFinishBound!:(() => void) | null
+    _connecting!:boolean
 
-    static WEBRTC_SUPPORT: boolean
-    static config: RTCConfiguration
-    static channelConfig: RTCDataChannelInit
+    static WEBRTC_SUPPORT:boolean
+    static config:RTCConfiguration
+    static channelConfig:RTCDataChannelInit
 
-    constructor (opts: any = {}) {
+    constructor (opts:any = {}) {
         opts = Object.assign({
             allowHalfOpen: false
         }, opts)
@@ -206,7 +206,7 @@ class Peer extends Duplex {
         // HACK: Fix for odd Firefox behavior,
         // see: https://github.com/feross/simple-peer/pull/783
         if (typeof (this._pc as any).peerIdentity === 'object') {
-            (this._pc as any).peerIdentity.catch((err: any) => {
+            (this._pc as any).peerIdentity.catch((err:any) => {
                 this.__destroy(errCode(err, 'ERR_PC_PEER_IDENTITY'))
             })
         }
@@ -267,7 +267,7 @@ class Peer extends Duplex {
         }
     }
 
-    signal (data: any) {
+    signal (data:any) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -332,7 +332,7 @@ class Peer extends Duplex {
         }
     }
 
-    _addIceCandidate (candidate: any) {
+    _addIceCandidate (candidate:any) {
         const iceCandidateObj = new RTCIceCandidate(candidate)
         this._pc.addIceCandidate(iceCandidateObj)
             .catch(err => {
@@ -351,7 +351,7 @@ class Peer extends Duplex {
    * Send text/binary data to the remote peer.
    * @param {ArrayBufferView|ArrayBuffer|Uint8Array|string|Blob} chunk
    */
-    send (chunk: any) {
+    send (chunk:any) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -367,7 +367,7 @@ class Peer extends Duplex {
    * @param {String} kind
    * @param {Object} init
    */
-    addTransceiver (kind: string, init?: RTCRtpTransceiverInit) {
+    addTransceiver (kind:string, init?:RTCRtpTransceiverInit) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -397,7 +397,7 @@ class Peer extends Duplex {
    * Add a MediaStream to the connection.
    * @param {MediaStream} stream
    */
-    addStream (stream: MediaStream) {
+    addStream (stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -417,7 +417,7 @@ class Peer extends Duplex {
    * @param {MediaStreamTrack} track
    * @param {MediaStream} stream
    */
-    addTrack (track: MediaStreamTrack, stream: MediaStream) {
+    addTrack (track:MediaStreamTrack, stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -456,9 +456,9 @@ class Peer extends Duplex {
    * @param {MediaStream} stream
    */
     replaceTrack (
-        oldTrack: MediaStreamTrack,
-        newTrack: MediaStreamTrack | null,
-        stream: MediaStream
+        oldTrack:MediaStreamTrack,
+        newTrack:MediaStreamTrack | null,
+        stream:MediaStream
     ) {
         if (this._destroying) return
         if (this.destroyed) {
@@ -494,7 +494,7 @@ class Peer extends Duplex {
    * @param {MediaStreamTrack} track
    * @param {MediaStream} stream
    */
-    removeTrack (track: MediaStreamTrack, stream: MediaStream) {
+    removeTrack (track:MediaStreamTrack, stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -531,7 +531,7 @@ class Peer extends Duplex {
    * Remove a MediaStream from the connection.
    * @param {MediaStream} stream
    */
-    removeStream (stream: MediaStream) {
+    removeStream (stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -599,17 +599,17 @@ class Peer extends Duplex {
         this._isNegotiating = true
     }
 
-    _final (cb: any) {
+    _final (cb:any) {
         if (!this._readableState.ended) this.push(null)
         cb(null)
     }
 
-    __destroy (err?: Error) {
+    __destroy (err?:Error) {
         this.end()
         this._destroy(() => {}, err)
     }
 
-    _destroy (cb: () => void, err?: Error) {
+    _destroy (cb:() => void, err?:Error) {
         if (this.destroyed || this._destroying) return
         this._destroying = true
 
@@ -669,7 +669,7 @@ class Peer extends Duplex {
         }, 0)
     }
 
-    _setupData (event: any) {
+    _setupData (event:any) {
         if (!event.channel) {
             // In some situations `pc.createDataChannel()` returns
             // `undefined` (in wrtc), which is invalid behavior.
@@ -704,7 +704,7 @@ class Peer extends Duplex {
         channel.onclose = () => {
             this._onChannelClose()
         }
-        channel.onerror = (event: Event) => {
+        channel.onerror = (event:Event) => {
             const errorEvent = event as any
             const err = errorEvent.error instanceof Error
                 ? errorEvent.error
@@ -730,7 +730,7 @@ class Peer extends Duplex {
         }, CHANNEL_CLOSING_TIMEOUT)
     }
 
-    _write (chunk: any, cb: any) {
+    _write (chunk:any, cb:any) {
         if (this.destroyed) {
             return cb(errCode(
                 new Error('cannot write after peer is destroyed'),
@@ -839,7 +839,7 @@ class Peer extends Duplex {
 
     _requestMissingTransceivers () {
         if (this._pc.getTransceivers) {
-            this._pc.getTransceivers().forEach((transceiver: any) => {
+            this._pc.getTransceivers().forEach((transceiver:any) => {
                 if (!transceiver.mid && transceiver.sender.track &&
                     !transceiver.requested) {
                     // HACK: Safari returns negotiated transceivers
@@ -938,7 +938,7 @@ class Peer extends Duplex {
         }
     }
 
-    getStats (cb: any) {
+    getStats (cb:any) {
     // statreports can come with a value array instead of properties
         const flattenValues = report => {
             if (Object.prototype.toString.call(report.values) === '[object Array]') {
@@ -953,7 +953,7 @@ class Peer extends Duplex {
         if (this._pc.getStats.length === 0 || this._isReactNativeWebrtc) {
             this._pc.getStats()
                 .then(res => {
-                    const reports: any[] = []
+                    const reports:any[] = []
                     res.forEach(report => {
                         reports.push(flattenValues(report))
                     })
@@ -966,10 +966,10 @@ class Peer extends Duplex {
                 // If we destroy connection in `connect` callback this code might happen to run when actual connection is already closed
                 if (this.destroyed) return
 
-                const reports: any[] = []
-                res.result().forEach((result: any) => {
-                    const report: any = {}
-                    result.names().forEach((name: any) => {
+                const reports:any[] = []
+                res.result().forEach((result:any) => {
+                    const report:any = {}
+                    result.names().forEach((name:any) => {
                         report[name] = result.stat(name)
                     })
                     report.id = result.id
@@ -978,7 +978,7 @@ class Peer extends Duplex {
                     reports.push(flattenValues(report))
                 })
                 cb(null, reports)
-            }, (err: any) => cb(err))
+            }, (err:any) => cb(err))
 
             // Unknown browser, skip getStats() since it's anyone's guess which style of
             // getStats() they implement.
@@ -1162,7 +1162,7 @@ class Peer extends Duplex {
         this.emit('signalingStateChange', this._pc.signalingState)
     }
 
-    _onIceCandidate (event: any) {
+    _onIceCandidate (event:any) {
         if (this.destroyed) return
         if (event.candidate && this.trickle) {
             this.emit('signal', {
@@ -1183,7 +1183,7 @@ class Peer extends Duplex {
         }
     }
 
-    _onChannelMessage (event: any) {
+    _onChannelMessage (event:any) {
         if (this.destroyed) return
         let data = event.data
         if (data instanceof ArrayBuffer) {
@@ -1215,7 +1215,7 @@ class Peer extends Duplex {
         this.__destroy()
     }
 
-    _onTrack (event: any) {
+    _onTrack (event:any) {
         if (this.destroyed) return
 
         event.streams.forEach(eventStream => {
@@ -1239,7 +1239,7 @@ class Peer extends Duplex {
         })
     }
 
-    _debug (...args: any[]): void {
+    _debug (...args:any[]):void {
         args[0] = '[' + this._id + '] ' + args[0]
         Debug.apply(null, args)
     }

@@ -9,10 +9,10 @@ import errCode from 'err-code'
  * @param {Object} opts
  */
 class Peer extends Lite {
-    streams!: MediaStream[]
-    _senderMap!: Map<MediaStreamTrack, Map<MediaStream, RTCRtpSender>>
+    streams!:MediaStream[]
+    _senderMap!:Map<MediaStreamTrack, Map<MediaStream, RTCRtpSender>>
 
-    constructor (opts: any = {}) {
+    constructor (opts:any = {}) {
         super(opts)
         if (!this._pc) return
 
@@ -35,7 +35,7 @@ class Peer extends Lite {
    * @param {String} kind
    * @param {Object=} init
    */
-    addTransceiver (kind: string, init?: RTCRtpTransceiverInit) {
+    addTransceiver (kind:string, init?:RTCRtpTransceiverInit) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -64,7 +64,7 @@ class Peer extends Lite {
    * Add a MediaStream to the connection.
    * @param {MediaStream} stream
    */
-    addStream (stream: MediaStream) {
+    addStream (stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -84,7 +84,7 @@ class Peer extends Lite {
    * @param {MediaStreamTrack} track
    * @param {MediaStream} stream
    */
-    addTrack (track: MediaStreamTrack, stream: MediaStream) {
+    addTrack (track:MediaStreamTrack, stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -123,9 +123,9 @@ class Peer extends Lite {
    * @param {MediaStream} stream
    */
     replaceTrack (
-        oldTrack: MediaStreamTrack,
-        newTrack: MediaStreamTrack | null,
-        stream: MediaStream
+        oldTrack:MediaStreamTrack,
+        newTrack:MediaStreamTrack | null,
+        stream:MediaStream
     ) {
         if (this._destroying) return
         if (this.destroyed) {
@@ -161,7 +161,7 @@ class Peer extends Lite {
    * @param {MediaStreamTrack} track
    * @param {MediaStream} stream
    */
-    removeTrack (track: MediaStreamTrack, stream: MediaStream) {
+    removeTrack (track:MediaStreamTrack, stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -198,7 +198,7 @@ class Peer extends Lite {
    * Remove a MediaStream from the connection.
    * @param {MediaStream} stream
    */
-    removeStream (stream: MediaStream) {
+    removeStream (stream:MediaStream) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -215,7 +215,7 @@ class Peer extends Lite {
 
     _requestMissingTransceivers () {
         if (this._pc.getTransceivers) {
-            this._pc.getTransceivers().forEach((transceiver: any) => {
+            this._pc.getTransceivers().forEach((transceiver:any) => {
                 if (!transceiver.mid && transceiver.sender.track &&
                     !transceiver.requested) {
                     // HACK: Safari returns negotiated transceivers
@@ -227,10 +227,10 @@ class Peer extends Lite {
         }
     }
 
-    _onTrack (event: any) {
+    _onTrack (event:any) {
         if (this.destroyed) return
 
-        event.streams.forEach((eventStream: any) => {
+        event.streams.forEach((eventStream:any) => {
             this._debug('on track')
             this.emit('track', event.track, eventStream)
 

@@ -32,7 +32,7 @@ interface PeerEvents {
     'close':() => void
     'error':(error:Error) => void
     'data':(data:any) => void
-    'track':(track:MediaStreamTrack, stream: MediaStream) => void
+    'track':(track:MediaStreamTrack, stream:MediaStream) => void
     'stream':(stream:MediaStream) => void
     'negotiated':() => void
     'signalingStateChange':(state:string) => void
@@ -49,69 +49,69 @@ interface PeerEvents {
  * @param {Object} opts
  */
 class Peer extends Duplex {
-    _pc!: RTCPeerConnection
+    _pc!:RTCPeerConnection
 
     // Instance properties
-    __objectMode: boolean
-    _id: string
-    channelName: string | null
-    initiator: boolean
-    channelConfig: RTCDataChannelInit
-    channelNegotiated: boolean
-    config: RTCConfiguration
-    offerOptions: RTCOfferOptions
-    answerOptions: RTCAnswerOptions
-    sdpTransform: (sdp: string) => string
-    trickle: boolean
-    allowHalfTrickle: boolean
-    iceCompleteTimeout: number
+    __objectMode:boolean
+    _id:string
+    channelName:string | null
+    initiator:boolean
+    channelConfig:RTCDataChannelInit
+    channelNegotiated:boolean
+    config:RTCConfiguration
+    offerOptions:RTCOfferOptions
+    answerOptions:RTCAnswerOptions
+    sdpTransform:(sdp:string) => string
+    trickle:boolean
+    allowHalfTrickle:boolean
+    iceCompleteTimeout:number
 
-    _destroying: boolean
-    _connected: boolean
+    _destroying:boolean
+    _connected:boolean
 
-    remoteAddress: string | undefined
-    remoteFamily: string | undefined
-    remotePort: number | undefined
-    localAddress: string | undefined
-    localFamily: string | undefined
-    localPort: number | undefined
+    remoteAddress:string | undefined
+    remoteFamily:string | undefined
+    remotePort:number | undefined
+    localAddress:string | undefined
+    localFamily:string | undefined
+    localPort:number | undefined
 
-    _pcReady: boolean
-    _channelReady: boolean
-    _iceComplete: boolean
-    _iceCompleteTimer: NodeJS.Timeout | null
-    _channel: RTCDataChannel | null
-    _pendingCandidates: any[]
+    _pcReady:boolean
+    _channelReady:boolean
+    _iceComplete:boolean
+    _iceCompleteTimer:NodeJS.Timeout | null
+    _channel:RTCDataChannel | null
+    _pendingCandidates:any[]
 
-    _isNegotiating: boolean
-    _firstNegotiation: boolean
-    _batchedNegotiation: boolean
-    _queuedNegotiation: boolean
-    _sendersAwaitingStable: any[]
-    _closingInterval: NodeJS.Timeout | null
+    _isNegotiating:boolean
+    _firstNegotiation:boolean
+    _batchedNegotiation:boolean
+    _queuedNegotiation:boolean
+    _sendersAwaitingStable:any[]
+    _closingInterval:NodeJS.Timeout | null
 
-    _remoteTracks: Array<{ track: MediaStreamTrack, stream: MediaStream }>
-    _remoteStreams: MediaStream[]
+    _remoteTracks:Array<{ track:MediaStreamTrack, stream:MediaStream }>
+    _remoteStreams:MediaStream[]
 
-    _chunk: any
-    _cb: ((error?: Error | null) => void) | null
-    _interval: NodeJS.Timeout | null
+    _chunk:any
+    _cb:((error?:Error | null) => void) | null
+    _interval:NodeJS.Timeout | null
 
-    _isReactNativeWebrtc!: boolean
-    _onFinishBound!: (() => void) | null
-    _connecting!: boolean
+    _isReactNativeWebrtc!:boolean
+    _onFinishBound!:(() => void) | null
+    _connecting!:boolean
 
     // Override event emitter methods with proper types
-    declare emit: <K extends keyof PeerEvents>(event: K, ...args: Parameters<PeerEvents[K]>) => boolean
-    declare on: <K extends keyof PeerEvents>(event: K, listener: PeerEvents[K]) => this
-    declare once: <K extends keyof PeerEvents>(event: K, listener: PeerEvents[K]) => this
-    declare removeListener: <K extends keyof PeerEvents>(event: K, listener: PeerEvents[K]) => this
+    declare emit:<K extends keyof PeerEvents>(event:K, ...args:Parameters<PeerEvents[K]>) => boolean
+    declare on:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
+    declare once:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
+    declare removeListener:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
 
-    static WEBRTC_SUPPORT: boolean
-    static config: RTCConfiguration
-    static channelConfig: RTCDataChannelInit
+    static WEBRTC_SUPPORT:boolean
+    static config:RTCConfiguration
+    static channelConfig:RTCDataChannelInit
 
-    constructor (opts: any = {}) {
+    constructor (opts:any = {}) {
         opts = Object.assign({
             allowHalfOpen: false
         }, opts)
@@ -365,7 +365,7 @@ class Peer extends Duplex {
    * Send text/binary data to the remote peer.
    * @param {ArrayBufferView|ArrayBuffer|Uint8Array|string|Blob} chunk
    */
-    send (chunk: any) {
+    send (chunk:any) {
         if (this._destroying) return
         if (this.destroyed) {
             throw errCode(
@@ -535,7 +535,7 @@ class Peer extends Duplex {
         channel.onclose = () => {
             this._onChannelClose()
         }
-        channel.onerror = (event: Event) => {
+        channel.onerror = (event:Event) => {
             const errorEvent = event as any
             const err = errorEvent.error instanceof Error
                 ? errorEvent.error
@@ -774,7 +774,7 @@ class Peer extends Duplex {
         if (this._pc.getStats.length === 0 || this._isReactNativeWebrtc) {
             this._pc.getStats()
                 .then(res => {
-                    const reports: any[] = []
+                    const reports:any[] = []
                     res.forEach(report => {
                         reports.push(flattenValues(report))
                     })
@@ -788,10 +788,10 @@ class Peer extends Duplex {
                 // might happen to run when actual connection is already closed
                 if (this.destroyed) return
 
-                const reports: any[] = []
-                res.result().forEach((result: any) => {
-                    const report: any = {}
-                    result.names().forEach((name: any) => {
+                const reports:any[] = []
+                res.result().forEach((result:any) => {
+                    const report:any = {}
+                    result.names().forEach((name:any) => {
                         report[name] = result.stat(name)
                     })
                     report.id = result.id
@@ -800,7 +800,7 @@ class Peer extends Duplex {
                     reports.push(flattenValues(report))
                 })
                 cb(null, reports)
-            }, (err: any) => cb(err))
+            }, (err:any) => cb(err))
 
             // Unknown browser, skip getStats() since it's anyone's guess
             // which style of getStats() they implement.
