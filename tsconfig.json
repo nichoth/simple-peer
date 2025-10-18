@@ -4,7 +4,7 @@
     "module": "ES2022",
     "target": "ES2022",
     "moduleResolution": "Bundler",
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "lib": ["ES2022", "DOM", "WebWorker"],
     "types": ["vite/client", "node"],
     "allowJs": false,

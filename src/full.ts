@@ -5,7 +5,8 @@ import {
     RTCIceCandidate
 } from 'webrtc-polyfill'
 import { Duplex } from 'streamx'
-import errCode from 'err-code'
+import type { DuplexEvents } from 'streamx'
+import { errCode } from './util'
 import { randomBytes, arr2hex, text2arr } from 'uint8-util'
 
 const Debug = debug('simple-peer')
@@ -23,6 +24,23 @@ function warn (message) {
     console.warn(message)
 }
 
+// Custom events specific to Peer
+interface PeerCustomEvents {
+    'signal':(data:any) => void
+    'iceStateChange':(iceConnectionState:string, iceGatheringState:string) => void
+    'connect':() => void
+    'disconnect':() => void
+    'track':(track:MediaStreamTrack, stream:MediaStream) => void
+    'stream':(stream:MediaStream) => void
+    'negotiated':() => void
+    'signalingStateChange':(state:string) => void
+    'iceTimeout':() => void
+    '_iceComplete':() => void
+}
+
+// Combine Duplex events with Peer-specific events
+type PeerEvents = DuplexEvents<any, any> & PeerCustomEvents
+
 /**
  * WebRTC peer connection. Same API as node core `net.Socket`, plus a few
  * extra methods.
@@ -30,7 +48,7 @@ function warn (message) {
  * Duplex stream.
  * @param {Object} opts
  */
-class Peer extends Duplex {
+class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     _pc!:RTCPeerConnection
 
     // Instance properties
@@ -84,6 +102,10 @@ class Peer extends Duplex {
     _isReactNativeWebrtc!:boolean
     _onFinishBound!:(() => void) | null
     _connecting!:boolean
+
+    // Internal streamx state (not exposed in types but used in implementation)
+    _readableState!:{ ended:boolean }
+    _writableState!:{ ended:boolean }
 
     static WEBRTC_SUPPORT:boolean
     static config:RTCConfiguration
@@ -279,7 +301,7 @@ class Peer extends Duplex {
         if (typeof data === 'string') {
             try {
                 data = JSON.parse(data)
-            } catch (err) {
+            } catch (_err) {
                 data = {}
             }
         }
@@ -641,7 +663,7 @@ class Peer extends Duplex {
             if (this._channel) {
                 try {
                     this._channel.close()
-                } catch (err) {}
+                } catch (_err) {}
 
                 // allow events concurrent with destruction to be handled
                 this._channel.onmessage = null
@@ -652,7 +674,7 @@ class Peer extends Duplex {
             if (this._pc) {
                 try {
                     this._pc.close()
-                } catch (err) {}
+                } catch (_err) {}
 
                 // allow events concurrent with destruction to be handled
                 this._pc.oniceconnectionstatechange = null
@@ -1241,7 +1263,7 @@ class Peer extends Duplex {
 
     _debug (...args:any[]):void {
         args[0] = '[' + this._id + '] ' + args[0]
-        Debug.apply(null, args)
+        Debug(...args)
     }
 }
 

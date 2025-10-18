@@ -1,5 +1,5 @@
 import Lite from './lite.js'
-import errCode from 'err-code'
+import { errCode } from './util.js'
 
 /**
  * WebRTC peer connection. Same API as node core `net.Socket`, plus a few

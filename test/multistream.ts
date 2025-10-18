@@ -1,5 +1,5 @@
 import common from './common.js'
-import Peer from '../index.js'
+import Peer from '../src/index.js'
 import test from 'tape'
 
 test('multistream', function (t) {
@@ -439,10 +439,10 @@ test('removeTrack immediately', function (t) {
     peer1.removeTrack(stream1.getTracks()[0], stream1)
     peer2.removeTrack(stream2.getTracks()[0], stream2)
 
-    peer1.on('track', function (track, stream) {
+    peer1.on('track', function (_track, _stream) {
         t.fail('peer1 did not get track event')
     })
-    peer2.on('track', function (track, stream) {
+    peer2.on('track', function (_track, _stream) {
         t.fail('peer2 did not get track event')
     })
 
@@ -478,11 +478,11 @@ test('replaceTrack', function (t) {
     peer1.replaceTrack(stream1.getTracks()[0], stream2.getTracks()[0], stream1)
     peer2.replaceTrack(stream2.getTracks()[0], stream1.getTracks()[0], stream2)
 
-    peer1.on('track', function (track, stream) {
+    peer1.on('track', function (_track, _stream) {
         t.pass('peer1 got track event')
         peer2.replaceTrack(stream2.getTracks()[0], null, stream2)
     })
-    peer2.on('track', function (track, stream) {
+    peer2.on('track', function (_track, _stream) {
         t.pass('peer2 got track event')
         peer1.replaceTrack(stream1.getTracks()[0], null, stream1)
     })

@@ -1,5 +1,5 @@
 import common from './common.js'
-import Peer from '../index.js'
+import Peer from '../src/index.js'
 import test from 'tape'
 
 test('single negotiation', function (t) {
@@ -25,15 +25,15 @@ test('single negotiation', function (t) {
         t.pass('peer2 connected')
     })
 
-    peer1.on('stream', function (stream) {
+    peer1.on('stream', function (_stream) {
         t.pass('peer1 got stream')
     })
-    peer2.on('stream', function (stream) {
+    peer2.on('stream', function (_stream) {
         t.pass('peer2 got stream')
     })
 
     let trackCount1 = 0
-    peer1.on('track', function (track) {
+    peer1.on('track', function (_track) {
         t.pass('peer1 got track')
         trackCount1++
         if (trackCount1 >= 2) {
@@ -41,7 +41,7 @@ test('single negotiation', function (t) {
         }
     })
     let trackCount2 = 0
-    peer2.on('track', function (track) {
+    peer2.on('track', function (_track) {
         t.pass('peer2 got track')
         trackCount2++
         if (trackCount2 >= 2) {

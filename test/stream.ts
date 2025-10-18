@@ -1,4 +1,4 @@
-import Peer from '../index.js'
+import Peer from '../src/index.js'
 import str from 'string-to-stream'
 import test from 'tape'
 
@@ -76,6 +76,6 @@ test('duplex stream: send data one-way', function (t) {
             t.ok(peer2._readableState.ended)
         })
 
-        str('abc').pipe(peer1)
+        str('abc').pipe(peer1 as any)
     }
 })

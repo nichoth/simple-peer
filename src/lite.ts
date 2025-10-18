@@ -5,7 +5,8 @@ import {
     RTCIceCandidate
 } from 'webrtc-polyfill'
 import { Duplex } from 'streamx'
-import errCode from 'err-code'
+import type { DuplexEvents } from 'streamx'
+import { errCode } from './util.js'
 import { randomBytes, arr2hex, text2arr } from 'uint8-util'
 
 const debug = Debug('simple-peer')
@@ -23,32 +24,30 @@ function warn (message) {
     console.warn(message)
 }
 
-// Custom event interface for Peer
-interface PeerEvents {
+// Custom events specific to Peer
+interface PeerCustomEvents {
     'signal':(data:any) => void
     'iceStateChange':(iceConnectionState:string, iceGatheringState:string) => void
     'connect':() => void
     'disconnect':() => void
-    'close':() => void
-    'error':(error:Error) => void
-    'data':(data:any) => void
     'track':(track:MediaStreamTrack, stream:MediaStream) => void
     'stream':(stream:MediaStream) => void
     'negotiated':() => void
     'signalingStateChange':(state:string) => void
     'iceTimeout':() => void
     '_iceComplete':() => void
-    'finish':() => void
 }
+
+// Combine Duplex events with Peer-specific events
+type PeerEvents = DuplexEvents<any, any> & PeerCustomEvents
 
 /**
  * WebRTC peer connection. Same API as node core `net.Socket`,
  * plus a few extra methods.
  *
  * Duplex stream.
- * @param {Object} opts
  */
-class Peer extends Duplex {
+class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     _pc!:RTCPeerConnection
 
     // Instance properties
@@ -101,11 +100,9 @@ class Peer extends Duplex {
     _onFinishBound!:(() => void) | null
     _connecting!:boolean
 
-    // Override event emitter methods with proper types
-    declare emit:<K extends keyof PeerEvents>(event:K, ...args:Parameters<PeerEvents[K]>) => boolean
-    declare on:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
-    declare once:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
-    declare removeListener:<K extends keyof PeerEvents>(event:K, listener:PeerEvents[K]) => this
+    // Internal streamx state (not exposed in types but used in implementation)
+    _readableState!:{ ended:boolean }
+    _writableState!:{ ended:boolean }
 
     static WEBRTC_SUPPORT:boolean
     static config:RTCConfiguration
@@ -434,16 +431,16 @@ class Peer extends Duplex {
         cb(null)
     }
 
-    __destroy (err) {
+    __destroy (err?) {
         this.end()
-        this._destroy(() => {}, err)
+        this.destroy(err || undefined)
     }
 
-    _destroy (cb, err) {
+    _destroy (cb) {
         if (this.destroyed || this._destroying) return
         this._destroying = true
 
-        this._debug('destroying (error: %s)', err && (err.message || err))
+        this._debug('destroying')
 
         setTimeout(() => {
             // allow events concurrent with the call to _destroy() to fire
@@ -494,7 +491,6 @@ class Peer extends Duplex {
             }
             this._pc = null as any
             this._channel = null
-            if (err) this.emit('error', err)
             cb()
         }, 0)
     }
