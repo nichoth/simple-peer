@@ -4,9 +4,9 @@
 import test from 'tape'
 
 test('cleanup', function (t) {
-  // Shut down the process and any daemons
-  t.end()
-  if (process && process.exit) {
-    process.exit(0)
-  }
+    // Shut down the process and any daemons
+    t.end()
+    if (process && process.exit) {
+        process.exit(0)
+    }
 })

@@ -30,6 +30,7 @@
     "build-docs": "typedoc ./src/index.ts",
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
     "test": "npm run test-node && npm run test-browser",
+    "test:node": "esbuild ",
     "test-browser": "airtap --concurrency 1 --all -- test/*.js test/browser/*.js | tap-spec",
     "test-browser-local": "airtap --preset local -- test/*.js | tap-spec",
     "test-node": "tape test/*.js",
@@ -37,7 +38,6 @@
   },
   "dependencies": {
     "debug": "^4.3.7",
-    "err-code": "^3.0.1",
     "streamx": "^2.20.1",
     "uint8-util": "^2.2.5",
     "webrtc-polyfill": "^1.1.10"
@@ -48,11 +48,6 @@
     "@substrate-system/debug": "^0.9.26",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
-    "airtap": "^4.0.4",
-    "airtap-manual": "^1.0.0",
-    "airtap-system": "^0.1.0",
-    "babelify": "^10.0.0",
-    "bowser": "^2.11.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.25.11",
     "eslint": "^8.57.1",

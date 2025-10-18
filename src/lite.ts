@@ -290,7 +290,7 @@ class Peer extends Duplex {
         if (typeof data === 'string') {
             try {
                 data = JSON.parse(data)
-            } catch (err) {
+            } catch (_err) {
                 data = {}
             }
         }
@@ -471,7 +471,7 @@ class Peer extends Duplex {
             if (this._channel) {
                 try {
                     this._channel.close()
-                } catch (err) {}
+                } catch (_err) {}
 
                 // allow events concurrent with destruction to be handled
                 this._channel.onmessage = null
@@ -482,7 +482,7 @@ class Peer extends Duplex {
             if (this._pc) {
                 try {
                     this._pc.close()
-                } catch (err) {}
+                } catch (_err) {}
 
                 // allow events concurrent with destruction to be handled
                 this._pc.oniceconnectionstatechange = null
@@ -1084,7 +1084,7 @@ class Peer extends Duplex {
 
     _debug (...args:any[]):void {
         args[0] = '[' + this._id + '] ' + args[0]
-        debug.apply(null, args)
+        debug(...args)
     }
 }
 
