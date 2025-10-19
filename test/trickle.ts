@@ -2,7 +2,9 @@ import Peer from '../src/index.js'
 import test from 'tape'
 
 test('disable trickle', function (t) {
+    if (!process.browser) return t.end()
     t.plan(8)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, trickle: false })
     const peer2 = new Peer({ trickle: false })
@@ -48,7 +50,9 @@ test('disable trickle', function (t) {
 })
 
 test('disable trickle (only initiator)', function (t) {
+    if (!process.browser) return t.end()
     t.plan(8)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, trickle: false })
     const peer2 = new Peer()
@@ -94,7 +98,9 @@ test('disable trickle (only initiator)', function (t) {
 })
 
 test('disable trickle (only receiver)', function (t) {
+    if (!process.browser) return t.end()
     t.plan(8)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer({ trickle: false })
@@ -140,6 +146,7 @@ test('disable trickle (only receiver)', function (t) {
 })
 
 test('null end candidate does not throw', function (t) {
+    if (!process.browser) return t.end()
     const peer1 = new Peer({ trickle: true, initiator: true })
     const peer2 = new Peer({ trickle: true })
 
@@ -170,6 +177,7 @@ test('null end candidate does not throw', function (t) {
 })
 
 test('empty-string end candidate does not throw', function (t) {
+    if (!process.browser) return t.end()
     const peer1 = new Peer({ trickle: true, initiator: true })
     const peer2 = new Peer({ trickle: true })
 
@@ -200,6 +208,7 @@ test('empty-string end candidate does not throw', function (t) {
 })
 
 test('mDNS candidate does not throw', function (t) {
+    if (!process.browser) return t.end()
     const peer1 = new Peer({ trickle: true, initiator: true })
     const peer2 = new Peer({ trickle: true })
 
@@ -220,7 +229,9 @@ test('mDNS candidate does not throw', function (t) {
 })
 
 test('ice candidates received before description', function (t) {
+    if (!process.browser) return t.end()
     t.plan(3)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()

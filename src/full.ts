@@ -103,10 +103,6 @@ class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     _onFinishBound!:(() => void) | null
     _connecting!:boolean
 
-    // Internal streamx state (not exposed in types but used in implementation)
-    _readableState!:{ ended:boolean }
-    _writableState!:{ ended:boolean }
-
     static WEBRTC_SUPPORT:boolean
     static config:RTCConfiguration
     static channelConfig:RTCDataChannelInit
@@ -622,20 +618,20 @@ class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     }
 
     _final (cb:any) {
-        if (!this._readableState.ended) this.push(null)
+        if (!(this as any)._readableState?.ended) this.push(null)
         cb(null)
     }
 
     __destroy (err?:Error) {
         this.end()
-        this._destroy(() => {}, err)
+        this.destroy(err || undefined)
     }
 
-    _destroy (cb:() => void, err?:Error) {
+    _destroy (cb:() => void) {
         if (this.destroyed || this._destroying) return
         this._destroying = true
 
-        this._debug('destroying (error: %s)', err && (err.message || err))
+        this._debug('destroying')
 
         // allow events concurrent with the call to _destroy() to fire
         // (see #692)
@@ -686,7 +682,6 @@ class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
             }
             this._pc = null as any
             this._channel = null
-            if (err) this.emit('error', err)
             cb()
         }, 0)
     }

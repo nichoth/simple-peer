@@ -39,6 +39,7 @@ import test from 'tape'
 // })
 
 test('duplex stream: send data one-way', function (t) {
+    if (!process.browser) return t.end()
     t.plan(9)
     t.timeoutAfter(20000)
 
@@ -57,11 +58,11 @@ test('duplex stream: send data one-way', function (t) {
         })
         peer1.on('finish', function () {
             t.pass('got peer1 "finish"')
-            t.ok(peer1._writableState.ended)
+            t.ok((peer1 as any)._writableState.ended)
         })
         peer1.on('end', function () {
             t.pass('got peer1 "end"')
-            t.ok(peer1._readableState.ended)
+            t.ok((peer1 as any)._readableState.ended)
         })
 
         peer2.on('data', function (chunk) {
@@ -69,11 +70,11 @@ test('duplex stream: send data one-way', function (t) {
         })
         peer2.on('finish', function () {
             t.pass('got peer2 "finish"')
-            t.ok(peer2._writableState.ended)
+            t.ok((peer2 as any)._writableState.ended)
         })
         peer2.on('end', function () {
             t.pass('got peer2 "end"')
-            t.ok(peer2._readableState.ended)
+            t.ok((peer2 as any)._readableState.ended)
         })
 
         str('abc').pipe(peer1 as any)

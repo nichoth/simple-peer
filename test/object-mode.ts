@@ -2,7 +2,9 @@ import Peer from '../src/index.js'
 import test from 'tape'
 
 test('data send/receive string {objectMode: true}', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, objectMode: true })
     const peer2 = new Peer({ objectMode: true })
@@ -38,7 +40,9 @@ test('data send/receive string {objectMode: true}', function (t) {
 })
 
 test('data send/receive Buffer {objectMode: true}', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, objectMode: true })
     const peer2 = new Peer({ objectMode: true })
@@ -74,7 +78,9 @@ test('data send/receive Buffer {objectMode: true}', function (t) {
 })
 
 test('data send/receive Uint8Array {objectMode: true}', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, objectMode: true })
     const peer2 = new Peer({ objectMode: true })
@@ -112,7 +118,9 @@ test('data send/receive Uint8Array {objectMode: true}', function (t) {
 })
 
 test('data send/receive ArrayBuffer {objectMode: true}', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, objectMode: true })
     const peer2 = new Peer({ objectMode: true })

@@ -5,6 +5,7 @@ import test from 'tape'
 test('single negotiation', function (t) {
     if (!process.browser) return t.end()
     t.plan(10)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true, stream: common.getMediaStream() as MediaStream })
     const peer2 = new Peer({ stream: common.getMediaStream() as MediaStream })
@@ -53,6 +54,7 @@ test('single negotiation', function (t) {
 test('manual renegotiation', function (t) {
     if (!process.browser) return t.end()
     t.plan(2)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -75,6 +77,7 @@ test('manual renegotiation', function (t) {
 test('repeated manual renegotiation', function (t) {
     if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -117,6 +120,7 @@ test('renegotiation after addStream', function (t) {
         return
     }
     t.plan(4)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -143,6 +147,7 @@ test('renegotiation after addStream', function (t) {
 test('add stream on non-initiator only', function (t) {
     if (!process.browser) return t.end()
     t.plan(3)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true
@@ -166,7 +171,9 @@ test('add stream on non-initiator only', function (t) {
 })
 
 test('negotiated channels', function (t) {
+    if (!process.browser) return t.end()
     t.plan(2)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,

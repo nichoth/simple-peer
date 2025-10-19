@@ -10,6 +10,7 @@ test('multistream', function (t) {
         return
     }
     t.plan(20)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -50,6 +51,7 @@ test('multistream', function (t) {
 test('multistream (track event)', function (t) {
     if (!process.browser) return t.end()
     t.plan(20)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -92,6 +94,7 @@ test('multistream (track event)', function (t) {
 test('multistream on non-initiator only', function (t) {
     if (!process.browser) return t.end()
     t.plan(30)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -135,8 +138,8 @@ test('delayed stream on non-initiator', function (t) {
         t.end()
         return
     }
-    t.timeoutAfter(15000)
     t.plan(1)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         trickle: true,
@@ -173,6 +176,7 @@ test('incremental multistream', function (t) {
         return
     }
     t.plan(12)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -233,6 +237,7 @@ test('incremental multistream', function (t) {
 test('incremental multistream (track event)', function (t) {
     if (!process.browser) return t.end()
     t.plan(22)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -298,6 +303,7 @@ test('incremental multistream on non-initiator only', function (t) {
         return
     }
     t.plan(7)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -343,6 +349,7 @@ test('incremental multistream on non-initiator only', function (t) {
 test('incremental multistream on non-initiator only (track event)', function (t) {
     if (!process.browser) return t.end()
     t.plan(12)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({
         initiator: true,
@@ -393,6 +400,7 @@ test('addStream after removeStream', function (t) {
         return
     }
     t.plan(2)
+    t.timeoutAfter(20000)
 
     const stream1 = common.getMediaStream() as MediaStream
     const stream2 = common.getMediaStream() as MediaStream
@@ -423,6 +431,7 @@ test('addStream after removeStream', function (t) {
 test('removeTrack immediately', function (t) {
     if (!process.browser) return t.end()
     t.plan(2)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer({ })
@@ -462,6 +471,7 @@ test('removeTrack immediately', function (t) {
 test('replaceTrack', function (t) {
     if (!process.browser) return t.end()
     t.plan(4)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer({ })

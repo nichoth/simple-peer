@@ -100,10 +100,6 @@ class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     _onFinishBound!:(() => void) | null
     _connecting!:boolean
 
-    // Internal streamx state (not exposed in types but used in implementation)
-    _readableState!:{ ended:boolean }
-    _writableState!:{ ended:boolean }
-
     static WEBRTC_SUPPORT:boolean
     static config:RTCConfiguration
     static channelConfig:RTCDataChannelInit
@@ -427,7 +423,7 @@ class Peer extends Duplex<any, any, any, any, true, true, PeerEvents> {
     }
 
     _final (cb) {
-        if (!this._readableState.ended) this.push(null)
+        if (!(this as any)._readableState?.ended) this.push(null)
         cb(null)
     }
 

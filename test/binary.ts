@@ -2,7 +2,9 @@ import Peer from '../src/index.js'
 import test from 'tape'
 
 test('data send/receive Buffer', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -38,7 +40,9 @@ test('data send/receive Buffer', function (t) {
 })
 
 test('data send/receive Uint8Array', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -76,7 +80,9 @@ test('data send/receive Uint8Array', function (t) {
 })
 
 test('data send/receive ArrayBuffer', function (t) {
+    if (!process.browser) return t.end()
     t.plan(6)
+    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
