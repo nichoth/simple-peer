@@ -1,6 +1,6 @@
 // Browser-specific MediaStream tests
 import Peer from '../../src/index.js'
-import test, { type Test } from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 // Helper to create a test MediaStream with canvas
 function createMediaStream ():MediaStream {
@@ -12,9 +12,8 @@ function createMediaStream ():MediaStream {
     return stream
 }
 
-test('browser: two peers can exchange media streams', function (t:Test) {
-    t.plan(6)
-    t.timeoutAfter(20000)
+test('browser: two peers can exchange media streams', async t => {
+    t.plan(6, 20000)  // 6 assertions, 20 second timeout
 
     const stream1 = createMediaStream()
     const stream2 = createMediaStream()
@@ -25,8 +24,8 @@ test('browser: two peers can exchange media streams', function (t:Test) {
     peer1.on('signal', data => peer2.signal(data))
     peer2.on('signal', data => peer1.signal(data))
 
-    peer1.on('connect', () => t.pass('peer1 connected'))
-    peer2.on('connect', () => t.pass('peer2 connected'))
+    peer1.on('connect', () => t.ok(true, 'peer1 connected'))
+    peer2.on('connect', () => t.ok(true, 'peer2 connected'))
 
     peer1.on('stream', receivedStream => {
         t.ok(receivedStream instanceof MediaStream, 'peer1 received MediaStream')
@@ -42,11 +41,18 @@ test('browser: two peers can exchange media streams', function (t:Test) {
             peer2.destroy()
         }, 100)
     })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: two peers can add streams after connection', function (t:Test) {
-    t.plan(4)
-    t.timeoutAfter(20000)
+test('browser: two peers can add streams after connection', async t => {
+    t.plan(4, 20000)  // 4 assertions, 20 second timeout
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -55,14 +61,14 @@ test('browser: two peers can add streams after connection', function (t:Test) {
     peer2.on('signal', data => peer1.signal(data))
 
     peer1.on('connect', function () {
-        t.pass('peer1 connected')
+        t.ok(true, 'peer1 connected')
         // Add stream after connection
         const stream = createMediaStream()
         peer1.addStream(stream)
     })
 
     peer2.on('connect', function () {
-        t.pass('peer2 connected')
+        t.ok(true, 'peer2 connected')
     })
 
     peer2.on('stream', receivedStream => {
@@ -74,11 +80,18 @@ test('browser: two peers can add streams after connection', function (t:Test) {
             peer2.destroy()
         }, 100)
     })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: two peers receive track events', function (t:Test) {
-    t.plan(6)
-    t.timeoutAfter(20000)
+test('browser: two peers receive track events', async t => {
+    t.plan(6, 20000)  // 6 assertions, 20 second timeout
 
     const stream1 = createMediaStream()
     const stream2 = createMediaStream()
@@ -111,11 +124,18 @@ test('browser: two peers receive track events', function (t:Test) {
             }, 100)
         }
     })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: two peers can send data and stream simultaneously', function (t:Test) {
-    t.plan(5)
-    t.timeoutAfter(20000)
+test('browser: two peers can send data and stream simultaneously', async t => {
+    t.plan(5, 20000)  // 5 assertions, 20 second timeout
 
     const stream = createMediaStream()
     const peer1 = new Peer({ initiator: true, stream })
@@ -134,7 +154,7 @@ test('browser: two peers can send data and stream simultaneously', function (t:T
     })
 
     peer2.on('connect', function () {
-        t.pass('peer2 connected')
+        t.ok(true, 'peer2 connected')
         peer1.send('test message')
     })
 
@@ -146,17 +166,24 @@ test('browser: two peers can send data and stream simultaneously', function (t:T
 
     function checkComplete () {
         if (gotStream && gotData) {
-            t.pass('received both stream and data')
-            t.pass('test complete')
+            t.ok(true, 'received both stream and data')
+            t.ok(true, 'test complete')
             peer1.destroy()
             peer2.destroy()
         }
     }
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: peer can remove and add tracks', function (t:Test) {
-    t.plan(3)
-    t.timeoutAfter(20000)
+test('browser: peer can remove and add tracks', async t => {
+    t.plan(3, 20000)  // 3 assertions, 20 second timeout
 
     const stream = createMediaStream()
     const peer1 = new Peer({ initiator: true, stream })
@@ -166,24 +193,32 @@ test('browser: peer can remove and add tracks', function (t:Test) {
     peer2.on('signal', data => peer1.signal(data))
 
     peer1.on('connect', function () {
-        t.pass('peer1 connected')
+        t.ok(true, 'peer1 connected')
 
         // Remove a track
         const tracks = stream.getTracks()
         if (tracks.length > 0) {
             peer1.removeTrack(tracks[0], stream)
-            t.pass('removed track successfully')
+            t.ok(true, 'removed track successfully')
         }
 
         // Add it back
         if (tracks.length > 0) {
             peer1.addTrack(tracks[0], stream)
-            t.pass('added track back successfully')
+            t.ok(true, 'added track back successfully')
         }
 
         setTimeout(() => {
             peer1.destroy()
             peer2.destroy()
         }, 1000)
+    })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
     })
 })

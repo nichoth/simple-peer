@@ -1,10 +1,9 @@
 // Browser-specific peer connection tests
 import Peer from '../../src/index.js'
-import test, { type Test } from 'tape'
+import { test } from '@substrate-system/tapzero'
 
-test('browser: two peers can connect and exchange messages', function (t:Test) {
-    t.plan(6)
-    t.timeoutAfter(20000)
+test('browser: two peers can connect and exchange messages', async t => {
+    t.plan(6, 20000)  // 6 assertions, 20 second timeout
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -39,12 +38,12 @@ test('browser: two peers can connect and exchange messages', function (t:Test) {
 
     peer1.on('connect', function () {
         console.log('peer1 connected')
-        t.pass('peer1 connected')
+        t.ok(true, 'peer1 connected')
     })
 
     peer2.on('connect', function () {
         console.log('peer2 connected')
-        t.pass('peer2 connected')
+        t.ok(true, 'peer2 connected')
 
         // Test bidirectional messaging
         peer1.send('Hello from peer1')
@@ -61,16 +60,24 @@ test('browser: two peers can connect and exchange messages', function (t:Test) {
     })
 
     function cleanup () {
-        peer1.on('close', () => t.pass('peer1 closed'))
-        peer2.on('close', () => t.pass('peer2 closed'))
+        peer1.on('close', () => t.ok(true, 'peer1 closed'))
+        peer2.on('close', () => t.ok(true, 'peer2 closed'))
         peer1.destroy()
         peer2.destroy()
     }
+
+    // Wait for test to complete or timeout
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: two peers can exchange binary data', function (t:Test) {
-    t.plan(5)
-    t.timeoutAfter(20000)
+test('browser: two peers can exchange binary data', async t => {
+    t.plan(5, 20000)  // 5 assertions, 20 second timeout
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -80,7 +87,7 @@ test('browser: two peers can exchange binary data', function (t:Test) {
 
     peer1.on('connect', function () {
         peer2.on('connect', function () {
-            t.pass('peers connected')
+            t.ok(true, 'peers connected')
 
             // Send binary data
             const binaryData = new Uint8Array([0xFF, 0xFE, 0xFD, 0xFC])
@@ -101,18 +108,24 @@ test('browser: two peers can exchange binary data', function (t:Test) {
                     const received = new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
                     t.deepEqual(Array.from(received), [1, 2, 3], 'reverse binary data matches')
 
-                    t.pass('test complete')
                     peer1.destroy()
                     peer2.destroy()
                 })
             })
         })
     })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: two peers can exchange large messages', function (t:Test) {
-    t.plan(4)
-    t.timeoutAfter(20000)
+test('browser: two peers can exchange large messages', async t => {
+    t.plan(4, 20000)  // 4 assertions, 20 second timeout
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -122,7 +135,7 @@ test('browser: two peers can exchange large messages', function (t:Test) {
 
     peer1.on('connect', function () {
         peer2.on('connect', function () {
-            t.pass('peers connected')
+            t.ok(true, 'peers connected')
 
             // Send large binary data (1MB)
             const largeData = new Uint8Array(1024 * 1024)
@@ -136,18 +149,25 @@ test('browser: two peers can exchange large messages', function (t:Test) {
                 t.ok(ArrayBuffer.isView(data), 'received large data')
                 const received = new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
                 t.equal(received.length, 1024 * 1024, 'correct size')
-                t.deepEqual(received[1000], 1000 % 256, 'data integrity check')
+                t.equal(received[1000], 1000 % 256, 'data integrity check')
 
                 peer1.destroy()
                 peer2.destroy()
             })
         })
     })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
+    })
 })
 
-test('browser: connection events fire in correct order', function (t:Test) {
-    t.plan(4)
-    t.timeoutAfter(20000)
+test('browser: connection events fire in correct order', async t => {
+    t.plan(4, 20000)  // 4 assertions, 20 second timeout
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
@@ -176,5 +196,13 @@ test('browser: connection events fire in correct order', function (t:Test) {
 
         peer1.destroy()
         peer2.destroy()
+    })
+
+    await new Promise<void>(resolve => {
+        setTimeout(() => {
+            peer1.destroy()
+            peer2.destroy()
+            resolve()
+        }, 15000)
     })
 })
