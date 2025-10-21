@@ -1,7 +1,7 @@
 {
   "name": "@nichoth/simple-peer",
   "description": "Simple one-to-one WebRTC video/voice and data channels",
-  "version": "10.0.12",
+  "version": "10.0.13",
   "type": "module",
   "exports": {
     ".": {
@@ -39,7 +39,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "debug": "^4.3.7",
+    "debug": "^4.4.3",
     "streamx": "^2.20.1",
     "uint8-util": "^2.2.5",
     "webrtc-polyfill": "^1.1.10"
@@ -51,13 +51,14 @@
     "@types/streamx": "^2.9.5",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
+    "auto-changelog": "^2.5.0",
     "bowser": "^2.12.1",
     "buffer": "^6.0.3",
-    "cross-env": "^7.0.3",
     "esbuild": "^0.25.11",
     "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
     "events": "^3.3.0",
+    "markdown-toc": "^1.2.0",
     "path-browserify": "^1.0.1",
     "prettier-bytes": "^1.0.4",
     "process": "^0.11.10",
@@ -65,12 +66,10 @@
     "stream-browserify": "^3.0.0",
     "string-to-stream": "^3.0.1",
     "tap-spec": "^5.0.0",
-    "tape": "^5.9.0",
-    "thunky": "^1.1.0",
     "typescript": "^5.9.3",
     "util": "^0.12.5",
     "vite": "^7.1.10",
-    "ws": "^8.18.0"
+    "ws": "^8.18.3"
   },
   "keywords": [
     "data",
