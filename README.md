@@ -1,6 +1,6 @@
 # @nichoth/simple-peer
 
-[![tests](https://img.shields.io/github/actions/workflow/status/nichoth/simple-peer/ci.yml?style=flat-square)](https://github.com/nichoth/simple-peer/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/github/actions/workflow/status/nichoth/simple-peer/nodejs.yml?style=flat-square)](https://github.com/nichoth/simple-peer/actions/workflows/nodejs.yml)
 [![types](https://img.shields.io/npm/types/@nichoth/simple-peer?style=flat-square)](README.md)
 [![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
 [![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
