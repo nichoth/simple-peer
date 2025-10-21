@@ -16,7 +16,7 @@
 
 ## Fork
 
-This is a fork of [thaunknown/simple-peer/](https://github.com/thaunknown/simple-peer/),
+This is a fork of [thaunknown/simple-peer](https://github.com/thaunknown/simple-peer/),
 adding typescript.
 
 
