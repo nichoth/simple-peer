@@ -31,9 +31,7 @@
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
     "test": "npm run test:node && npm run test:browser",
     "test:node": "esbuild ./test/index.ts --platform=node --bundle --format=esm --packages=external | node --input-type=module",
-    "test:browser": "esbuild --bundle --format=esm --inject:./test/browser-shim.js --define:process.browser=true --alias:stream=stream-browserify --alias:path=path-browserify --alias:buffer=buffer --alias:util=util --alias:process=process/browser.js ./test/browser-index.ts | npx @substrate-system/tapout -t 10000",
-    "test:browser:local": "airtap --preset local -- test/*.js | tap-spec",
-    "test-node-debug": "cross-env DEBUG=* tape test/negotiation.js"
+    "test:browser": "esbuild --bundle --format=esm --inject:./test/browser-shim.js --define:process.browser=true --alias:stream=stream-browserify --alias:path=path-browserify --alias:buffer=buffer --alias:util=util --alias:process=process/browser.js ./test/browser-index.ts | npx @substrate-system/tapout -t 10000"
   },
   "dependencies": {
     "debug": "^4.3.7",

@@ -1,27 +1,29 @@
-// @ts-check
 import common from './common.js'
 import Peer from '../src/index.js'
-import test, { type Test } from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 // User-Initiated Abort, reason=Close called
 process.on('uncaughtException', console.error)
 
-test('detect WebRTC support', function (t:Test) {
+test('detect WebRTC support', function (t) {
     t.equal(Peer.WEBRTC_SUPPORT, true, 'builtin webrtc support')
     t.end()
 })
 
-test('create peer without options', function (t:Test) {
+test('create peer without options', function (t) {
     t.plan(1)
 
     let peer:Peer
-    t.doesNotThrow(function () {
+    try {
         peer = new Peer()
         peer.destroy()
-    })
+        t.pass('peer created without error')
+    } catch (_err) {
+        t.fail('peer creation threw error')
+    }
 })
 
-test('signal event gets emitted', function (t:Test) {
+test('signal event gets emitted', function (t) {
     t.plan(2)
 
     const peer = new Peer({ initiator: true })
@@ -32,7 +34,7 @@ test('signal event gets emitted', function (t:Test) {
     })
 })
 
-test('signal event does not get emitted by non-initiator', function (t:Test) {
+test('signal event does not get emitted by non-initiator', function (t) {
     const peer = new Peer({ initiator: false })
     peer.once('signal', function () {
         t.fail('got signal event')
@@ -64,7 +66,7 @@ test('signal event does not get emitted by non-initiator', function (t:Test) {
 //   }, 1000)
 // })
 
-test('two peers can exchange text messages', function (t:Test) {
+test('two peers can exchange text messages', function (t) {
     if (!process.browser) return t.end()
     t.plan(8)
     t.timeoutAfter(20000)
@@ -126,7 +128,7 @@ test('two peers can exchange text messages', function (t:Test) {
     }
 })
 
-test('two peers can exchange multiple messages', function (t:Test) {
+test('two peers can exchange multiple messages', function (t) {
     if (!process.browser) return t.end()
     t.plan(8)
     t.timeoutAfter(20000)
@@ -180,7 +182,7 @@ test('two peers can exchange multiple messages', function (t:Test) {
     })
 })
 
-test('two peers can exchange binary data', function (t:Test) {
+test('two peers can exchange binary data', function (t) {
     if (!process.browser) return t.end()
     t.plan(6)
     t.timeoutAfter(20000)
@@ -223,7 +225,7 @@ test('two peers can exchange binary data', function (t:Test) {
     }
 })
 
-test('sdpTransform function is called', function (t:Test) {
+test('sdpTransform function is called', function (t) {
     if (!process.browser) return t.end()
     t.plan(3)
     t.timeoutAfter(20000)
@@ -252,7 +254,7 @@ test('sdpTransform function is called', function (t:Test) {
     })
 })
 
-test('old constraint formats are used', function (t:Test) {
+test('old constraint formats are used', function (t) {
     if (!process.browser) return t.end()
     t.plan(3)
     t.timeoutAfter(20000)
@@ -284,7 +286,7 @@ test('old constraint formats are used', function (t:Test) {
     })
 })
 
-test('new constraint formats are used', function (t:Test) {
+test('new constraint formats are used', function (t) {
     if (!process.browser) return t.end()
     t.plan(3)
     t.timeoutAfter(20000)
@@ -314,7 +316,7 @@ test('new constraint formats are used', function (t:Test) {
     })
 })
 
-test('ensure remote address and port are available right after connection', function (t:Test) {
+test('ensure remote address and port are available right after connection', function (t) {
     if (!process.browser) return t.end()
     if (common.isBrowser('safari') || common.isBrowser('ios')) {
         t.pass('Skip on Safari and iOS which do not support modern getStats() calls')

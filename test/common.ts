@@ -1,4 +1,5 @@
 import bowser from 'bowser'
+import { Test } from '@substrate-system/tapzero'
 
 // create a test MediaStream with two tracks
 let canvas:HTMLCanvasElement|undefined
@@ -25,6 +26,35 @@ export function isBrowser (name:string):boolean {
     }
 
     return !!bowser.getParser(window.navigator.userAgent).satisfies(satifyObject)
+}
+
+// Extend tapzero Test with additional methods for tape compatibility
+
+// Add pass() method
+if (!Test.prototype.pass) {
+    Test.prototype.pass = function (msg?: string) {
+        this.ok(true, msg || 'pass')
+    }
+}
+
+// Add end() method
+if (!Test.prototype.end) {
+    Test.prototype.end = function () {
+        // If no plan was set, resolve immediately
+        if (this._planned === null) {
+            this._planned = this._actual
+            if (this._resolve) {
+                this._resolve()
+            }
+        }
+    }
+}
+
+// Add timeoutAfter() method
+if (!Test.prototype.timeoutAfter) {
+    Test.prototype.timeoutAfter = function (ms: number) {
+        this.TIMEOUT_MS = ms
+    }
 }
 
 export default {

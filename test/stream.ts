@@ -1,6 +1,6 @@
 import Peer from '../src/index.js'
 import str from 'string-to-stream'
-import test from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 // test('duplex stream: send data before "connect" event', function (t) {
 //   t.plan(9)

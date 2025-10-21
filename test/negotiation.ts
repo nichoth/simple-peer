@@ -1,14 +1,18 @@
 import common from './common.js'
 import Peer from '../src/index.js'
-import test from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 test('single negotiation', function (t) {
-    if (!process.browser) return t.end()
+    if (!process.browser) return
     t.plan(10)
-    t.timeoutAfter(20000)
 
-    const peer1 = new Peer({ initiator: true, stream: common.getMediaStream() as MediaStream })
-    const peer2 = new Peer({ stream: common.getMediaStream() as MediaStream })
+    const peer1 = new Peer({
+        initiator: true,
+        stream: common.getMediaStream() as MediaStream
+    })
+    const peer2 = new Peer({
+        stream: common.getMediaStream() as MediaStream
+    })
 
     peer1.on('signal', function (data) {
         if (data.renegotiate) t.fail('got unexpected request to renegotiate')
@@ -20,56 +24,59 @@ test('single negotiation', function (t) {
     })
 
     peer1.on('connect', function () {
-        t.pass('peer1 connected')
+        t.ok('peer1 connected')
     })
     peer2.on('connect', function () {
-        t.pass('peer2 connected')
+        t.ok('peer2 connected')
     })
 
     peer1.on('stream', function (_stream) {
-        t.pass('peer1 got stream')
+        t.ok('peer1 got stream')
     })
     peer2.on('stream', function (_stream) {
-        t.pass('peer2 got stream')
+        t.ok('peer2 got stream')
     })
 
     let trackCount1 = 0
     peer1.on('track', function (_track) {
-        t.pass('peer1 got track')
+        t.ok('peer1 got track')
         trackCount1++
         if (trackCount1 >= 2) {
-            t.pass('got correct number of tracks')
+            t.ok('got correct number of tracks')
         }
     })
     let trackCount2 = 0
     peer2.on('track', function (_track) {
-        t.pass('peer2 got track')
+        t.ok('peer2 got track')
         trackCount2++
         if (trackCount2 >= 2) {
-            t.pass('got correct number of tracks')
+            t.ok('got correct number of tracks')
         }
     })
 })
 
 test('manual renegotiation', function (t) {
-    if (!process.browser) return t.end()
+    if (!process.browser) return
     t.plan(2)
-    t.timeoutAfter(20000)
 
     const peer1 = new Peer({ initiator: true })
     const peer2 = new Peer()
 
-    peer1.on('signal', function (data) { if (!peer2.destroyed) peer2.signal(data) })
-    peer2.on('signal', function (data) { if (!peer1.destroyed) peer1.signal(data) })
+    peer1.on('signal', function (data) {
+        if (!peer2.destroyed) peer2.signal(data)
+    })
+    peer2.on('signal', function (data) {
+        if (!peer1.destroyed) peer1.signal(data)
+    })
 
     peer1.on('connect', function () {
         peer1.negotiate()
 
         peer1.on('negotiated', function () {
-            t.pass('peer1 negotiated')
+            t.ok('peer1 negotiated')
         })
         peer2.on('negotiated', function () {
-            t.pass('peer2 negotiated')
+            t.ok('peer2 negotiated')
         })
     })
 })

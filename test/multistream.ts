@@ -1,6 +1,6 @@
 import common from './common.js'
 import Peer from '../src/index.js'
-import test from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 test('multistream', function (t) {
     if (!process.browser) return t.end()
@@ -41,11 +41,6 @@ test('multistream', function (t) {
             receivedIds[stream.id] = true
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('multistream (track event)', function (t) {
@@ -84,11 +79,6 @@ test('multistream (track event)', function (t) {
             receivedIds[track.id] = true
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('multistream on non-initiator only', function (t) {
@@ -124,11 +114,6 @@ test('multistream on non-initiator only', function (t) {
             receivedIds[stream.id] = true
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('delayed stream on non-initiator', function (t) {
@@ -160,11 +145,6 @@ test('delayed stream on non-initiator', function (t) {
     }, 10000)
     peer1.on('stream', function () {
         t.pass('peer1 got stream')
-    })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
     })
 })
 
@@ -227,11 +207,6 @@ test('incremental multistream', function (t) {
             peer2.addStream(common.getMediaStream() as MediaStream)
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('incremental multistream (track event)', function (t) {
@@ -288,11 +263,6 @@ test('incremental multistream (track event)', function (t) {
             peer2.addStream(common.getMediaStream() as MediaStream)
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('incremental multistream on non-initiator only', function (t) {
@@ -339,11 +309,6 @@ test('incremental multistream on non-initiator only', function (t) {
             peer2.addStream(common.getMediaStream() as MediaStream)
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('incremental multistream on non-initiator only (track event)', function (t) {
@@ -385,11 +350,6 @@ test('incremental multistream on non-initiator only (track event)', function (t)
             peer2.addStream(common.getMediaStream() as MediaStream)
         }
     })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
-    })
 })
 
 test('addStream after removeStream', function (t) {
@@ -420,11 +380,6 @@ test('addStream after removeStream', function (t) {
             })
             peer2.addStream(stream2)
         }, 1000)
-    })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
     })
 })
 
@@ -460,11 +415,6 @@ test('removeTrack immediately', function (t) {
     })
     peer2.on('connect', function () {
         t.pass('peer2 connected')
-    })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
     })
 })
 
@@ -502,10 +452,5 @@ test('replaceTrack', function (t) {
     })
     peer2.on('connect', function () {
         t.pass('peer2 connected')
-    })
-
-    t.on('end', () => {
-        peer1.destroy()
-        peer2.destroy()
     })
 })

@@ -1,5 +1,5 @@
 import Peer from '../src/index.js'
-import test from 'tape'
+import { test } from '@substrate-system/tapzero'
 
 test('data send/receive Buffer', function (t) {
     if (!process.browser) return t.end()
