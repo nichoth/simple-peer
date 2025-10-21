@@ -7,7 +7,6 @@
 [![Common Changelog](https://nichoth.github.io/badge/common-changelog.svg)](./CHANGELOG.md)
 [![install size](https://flat.badgen.net/packagephobia/install/@nichoth/simple-peer)](https://packagephobia.com/result?p=@nichoth/simple-peer)
 [![gzip size](https://img.shields.io/bundlephobia/minzip/@nichoth/simple-peer?style=flat-square)](https://bundlephobia.com/@nichoth/simple-peer)
-[![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen.svg?style=flat-square)](package.json)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
