@@ -11,7 +11,49 @@
 
 
 <details><summary><h2>Contents</h2></summary>
+
 <!-- toc -->
+
+- [Fork](#fork)
+- [Simple WebRTC video, voice, and data channels](#simple-webrtc-video-voice-and-data-channels)
+- [features](#features)
+- [install](#install)
+- [usage](#usage)
+  * [A simpler example](#a-simpler-example)
+  * [data channels](#data-channels)
+  * [video/voice](#videovoice)
+  * [dynamic video/voice](#dynamic-videovoice)
+  * [in node](#in-node)
+- [api](#api)
+  * [`peer = new Peer([opts])`](#peer--new-peeropts)
+  * [`peer.signal(data)`](#peersignaldata)
+  * [`peer.send(data)`](#peersenddata)
+  * [`peer.addStream(stream)`](#peeraddstreamstream)
+  * [`peer.removeStream(stream)`](#peerremovestreamstream)
+  * [`peer.addTrack(track, stream)`](#peeraddtracktrack-stream)
+  * [`peer.removeTrack(track, stream)`](#peerremovetracktrack-stream)
+  * [`peer.replaceTrack(oldTrack, newTrack, stream)`](#peerreplacetrackoldtrack-newtrack-stream)
+  * [`peer.addTransceiver(kind, init)`](#peeraddtransceiverkind-init)
+  * [`peer.destroy([err])`](#peerdestroyerr)
+  * [`Peer.WEBRTC_SUPPORT`](#peerwebrtc_support)
+  * [duplex stream](#duplex-stream)
+- [events](#events)
+  * [`peer.on('signal', data => {})`](#peeronsignal-data--)
+  * [`peer.on('connect', () => {})`](#peeronconnect---)
+  * [`peer.on('data', data => {})`](#peerondata-data--)
+  * [`peer.on('stream', stream => {})`](#peeronstream-stream--)
+  * [`peer.on('track', (track, stream) => {})`](#peerontrack-track-stream--)
+  * [`peer.on('close', () => {})`](#peeronclose---)
+  * [`peer.on('error', (err) => {})`](#peeronerror-err--)
+- [error codes](#error-codes)
+- [connecting more than 2 peers?](#connecting-more-than-2-peers)
+- [memory usage](#memory-usage)
+- [connection does not work on some networks?](#connection-does-not-work-on-some-networks)
+- [Who is using `simple-peer`?](#who-is-using-simple-peer)
+- [license](#license)
+
+<!-- tocstop -->
+
 </details>
 
 ## Fork
