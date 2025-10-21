@@ -1,17 +1,33 @@
-# @thaunknown/simple-peer [![coveralls][coveralls-image]][coveralls-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
+# @nichoth/simple-peer
 
-[coveralls-image]: https://coveralls.io/repos/github/thaunknown/simple-peer/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/thaunknown/simple-peer?branch=master
-[npm-image]: https://img.shields.io/npm/v/@thaunknown/simple-peer.svg
-[npm-url]: https://npmjs.org/package/@thaunknown/simple-peer
-[downloads-image]: https://img.shields.io/npm/dm/@thaunknown/simple-peer.svg
-[downloads-url]: https://npmjs.org/package/@thaunknown/simple-peer
-[standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
-[standard-url]: https://standardjs.com
+[![tests](https://img.shields.io/github/actions/workflow/status/nichoth/simple-peer/nodejs.yml?style=flat-square)](https://github.com/nichoth/simple-peer/actions/workflows/nodejs.yml)
+[![types](https://img.shields.io/npm/types/@nichoth/simple-peer?style=flat-square)](README.md)
+[![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
+[![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
+[![Common Changelog](https://nichoth.github.io/badge/common-changelog.svg)](./CHANGELOG.md)
+[![install size](https://flat.badgen.net/packagephobia/install/@nichoth/simple-peer)](https://packagephobia.com/result?p=@nichoth/simple-peer)
+[![gzip size](https://img.shields.io/bundlephobia/minzip/@nichoth/simple-peer?style=flat-square)](https://bundlephobia.com/@nichoth/name/package/simple-peer)
+[![dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen.svg?style=flat-square)](package.json)
+[![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-#### Simple WebRTC video, voice, and data channels
 
-This package is a more up to date version of feross's simple-peer, it does away with node:stream and node:buffer in favor of streamx and Uint8Array, making the module a lot smaller, additionally it provides `@thaunknown/simple-peer/lite.js` which is the same peer implementation, but without MediaTrack and MediaStream handling, just pure Uint8/String data.
+<details><summary><h2>Contents</h2></summary>
+<!-- toc -->
+</details>
+
+## Fork
+
+This is a fork of [thaunknown/simple-peer/](https://github.com/thaunknown/simple-peer/),
+adding typescript.
+
+
+## Simple WebRTC video, voice, and data channels
+
+This package is a more up to date version of feross's simple-peer, it does
+away with node:stream and node:buffer in favor of streamx and Uint8Array,
+making the module a lot smaller, additionally it provides
+`@nichoth/simple-peer/lite` which is the same peer implementation, but
+without MediaTrack and MediaStream handling, just pure Uint8/String data.
 
 It's fully backwards compatible with feross's version.
 

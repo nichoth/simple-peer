@@ -26,12 +26,17 @@
     "build-cjs:min": "esbuild src/*.ts --format=cjs --minify --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.min.cjs --sourcemap",
     "build-esm": "esbuild src/*.ts --format=esm --metafile=dist/meta.json --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --sourcemap && tsc --emitDeclarationOnly --project tsconfig.build.json --outDir dist",
     "build-esm:min": "esbuild ./src/*.ts --format=esm --keep-names --bundle --tsconfig=tsconfig.build.json --minify --out-extension:.js=.min.js --outdir=./dist --sourcemap --external:events",
-    "build-example": "mkdir -p ./public && rm -rf ./public/* && VITE_DEBUG_MODE=staging vite --mode staging --base=\"/repo-name\" build",
+    "build-example": "mkdir -p ./public && rm -rf ./public/* && VITE_DEBUG_MODE=staging vite --mode staging --base=\"/simple-peer\" build",
     "build-docs": "typedoc ./src/index.ts",
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
+    "toc": "markdown-toc --maxdepth 3 -i README.md",
     "test": "npm run test:node && npm run test:browser",
     "test:node": "esbuild ./test/index.ts --platform=node --bundle --format=esm --packages=external | node --input-type=module",
-    "test:browser": "esbuild --bundle --format=esm --inject:./test/browser-shim.js --define:process.browser=true --alias:stream=stream-browserify --alias:path=path-browserify --alias:buffer=buffer --alias:util=util --alias:process=process/browser.js ./test/browser-index.ts | npx @substrate-system/tapout -t 10000"
+    "test:browser": "esbuild --bundle --format=esm --inject:./test/browser-shim.js --define:process.browser=true --alias:stream=stream-browserify --alias:path=path-browserify --alias:buffer=buffer --alias:util=util --alias:process=process/browser.js ./test/browser-index.ts | npx @substrate-system/tapout -t 10000",
+    "preversion": "npm run lint",
+    "version": "npm run toc && auto-changelog -p --template keepachangelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md README.md",
+    "postversion": "git push --follow-tags && npm publish",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "debug": "^4.3.7",
