@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "debug": "^4.4.3",
-    "streamx": "^2.20.1",
-    "uint8-util": "^2.2.5",
+    "streamx": "^2.23.0",
+    "uint8-util": "^2.2.6",
     "webrtc-polyfill": "^1.1.10"
   },
   "devDependencies": {
